@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Appli.Data.Migrations
+namespace Appli.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,11 +40,29 @@ namespace Appli.Data.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Recruiter",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    FullName = table.Column<string>(maxLength: 40, nullable: false),
+                    PhoneNumber = table.Column<string>(nullable: false),
+                    EmailAddress = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Recruiter", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -153,6 +171,99 @@ namespace Appli.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "JobApplication",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<string>(nullable: false),
+                    DateCreated = table.Column<DateTime>(nullable: false, defaultValueSql: "GETDATE()"),
+                    NextInterview = table.Column<DateTime>(nullable: false, defaultValueSql: "GETDATE()"),
+                    CompanyName = table.Column<string>(maxLength: 30, nullable: false),
+                    Position = table.Column<string>(maxLength: 30, nullable: false),
+                    RecruiterId = table.Column<int>(nullable: true),
+                    PositionLink = table.Column<string>(nullable: true),
+                    Rejected = table.Column<bool>(nullable: false),
+                    Offer = table.Column<string>(nullable: true),
+                    LastContact = table.Column<DateTime>(nullable: false, defaultValueSql: "GETDATE()"),
+                    Notes = table.Column<string>(maxLength: 300, nullable: true),
+                    IsActive = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JobApplication", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_JobApplication_Recruiter_RecruiterId",
+                        column: x => x.RecruiterId,
+                        principalTable: "Recruiter",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Interview",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    JobApplicationId = table.Column<int>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false, defaultValueSql: "GETDATE()"),
+                    Address = table.Column<string>(nullable: true),
+                    Notes = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Interview", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Interview_JobApplication_JobApplicationId",
+                        column: x => x.JobApplicationId,
+                        principalTable: "JobApplication",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "FirstName", "LastName" },
+                values: new object[] { "00000000-ffff-ffff-ffff-ffffffffffff", 0, "f74207b1-80f3-4585-b79f-4dbab37225f9", "ApplicationUser", "deep@patel.com", true, false, null, "DEEP@PATEL.COM", "DEEP@PATEL.COM", "AQAAAAEAACcQAAAAEFcodX1bivXDOwe7WfJgdOsgPpAn2PjE+N7AkZNGyVY//h18AzXawfzlXJ+ZXtvxPA==", null, false, "7f434309-a4d9-48e9-9ebb-8803db794577", false, "deep@patel.com", "Deep", "Patel" });
+
+            migrationBuilder.InsertData(
+                table: "JobApplication",
+                columns: new[] { "Id", "CompanyName", "IsActive", "LastContact", "Notes", "Offer", "Position", "PositionLink", "RecruiterId", "Rejected", "UserId" },
+                values: new object[] { 1, "Google", true, new DateTime(2019, 8, 27, 12, 33, 14, 862, DateTimeKind.Local).AddTicks(6029), "I'm still on the fence about this company, I was hoping for more health coverage than dental", "$1,000,000 and dental", "Full Stack Dev", "www.google.com", null, false, "00000000-ffff-ffff-ffff-ffffffffffff" });
+
+            migrationBuilder.InsertData(
+                table: "JobApplication",
+                columns: new[] { "Id", "CompanyName", "IsActive", "LastContact", "Notes", "Offer", "Position", "PositionLink", "RecruiterId", "Rejected", "UserId" },
+                values: new object[] { 2, "Apple", true, new DateTime(2019, 9, 3, 12, 33, 14, 862, DateTimeKind.Local).AddTicks(8748), "Really like this company, I'm just more of an orange guy", "$1,000,001 and vision", "Front End Dev", "www.apple.com", null, false, "00000000-ffff-ffff-ffff-ffffffffffff" });
+
+            migrationBuilder.InsertData(
+                table: "JobApplication",
+                columns: new[] { "Id", "CompanyName", "IsActive", "LastContact", "Notes", "Offer", "Position", "PositionLink", "RecruiterId", "Rejected", "UserId" },
+                values: new object[] { 3, "Facebook", true, new DateTime(2019, 8, 31, 12, 33, 14, 862, DateTimeKind.Local).AddTicks(8775), "Really dont like this company, pretty sure the CEO is a lizard person", "$1,000,002 and health", "React End Dev", "www.facebook.com", null, false, "00000000-ffff-ffff-ffff-ffffffffffff" });
+
+            migrationBuilder.InsertData(
+                table: "Recruiter",
+                columns: new[] { "Id", "EmailAddress", "FullName", "PhoneNumber" },
+                values: new object[,]
+                {
+                    { 1, "janki@deep.com", "Janki Patel", "615-224-2345" },
+                    { 2, "anuj@deep.com", "Anuj Patel", "615-334-4565" },
+                    { 3, "Shreeda@deep.com", "Shreeda Patel", "847-123-4565" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Interview",
+                columns: new[] { "Id", "Address", "Date", "JobApplicationId", "Notes" },
+                values: new object[,]
+                {
+                    { 1, "510 Old Hickory Blvd", new DateTime(2019, 9, 6, 0, 0, 0, 0, DateTimeKind.Local), 1, "Wear a nice shirt" },
+                    { 2, "50 Hickory Blvd", new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Local), 1, "Wear a really nice shirt" },
+                    { 3, "5100 Old Blvd", new DateTime(2019, 9, 23, 0, 0, 0, 0, DateTimeKind.Local), 2, "Wear a nice shirt like Deep would" },
+                    { 4, "100 Old Town Road", new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Local), 2, "Smile" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -191,6 +302,16 @@ namespace Appli.Data.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Interview_JobApplicationId",
+                table: "Interview",
+                column: "JobApplicationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JobApplication_RecruiterId",
+                table: "JobApplication",
+                column: "RecruiterId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -211,10 +332,19 @@ namespace Appli.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Interview");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "JobApplication");
+
+            migrationBuilder.DropTable(
+                name: "Recruiter");
         }
     }
 }
