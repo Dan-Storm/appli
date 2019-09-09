@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Appli.Data;
 using Appli.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Appli.Controllers
 {
+    [Authorize]
     public class InterviewsController : Controller
     {
         private readonly ApplicationDbContext _context;
