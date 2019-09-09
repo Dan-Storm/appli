@@ -13,15 +13,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateCreated)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NextInterview)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.CompanyName)
             </th>
             <th>
@@ -34,7 +25,7 @@
                 @Html.DisplayNameFor(model => model.PositionLink)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Rejected)
+                @Html.DisplayNameFor(model => model.NextInterview)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Offer)
@@ -42,27 +33,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.LastContact)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsActive)
-            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateCreated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NextInterview)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CompanyName)
             </td>
@@ -76,19 +52,13 @@
                 @Html.DisplayFor(modelItem => item.PositionLink)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Rejected)
+                @Html.DisplayFor(modelItem => item.NextInterview)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Offer)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.LastContact)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

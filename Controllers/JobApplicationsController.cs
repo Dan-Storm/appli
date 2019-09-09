@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Appli.Data;
 using Appli.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Appli.Controllers
 {
@@ -15,16 +16,22 @@ namespace Appli.Controllers
     public class JobApplicationsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public JobApplicationsController(ApplicationDbContext context)
+        public JobApplicationsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: JobApplications
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.JobApplication.Include(j => j.Recruiter);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var applicationDbContext = _context.JobApplication
+                .Include(j => j.Recruiter)
+                .Include(j => j.User)
+                .Where(j => j.UserId == user.Id); 
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -35,9 +42,11 @@ namespace Appli.Controllers
             {
                 return NotFound();
             }
-
+            var user = await _userManager.GetUserAsync(HttpContext.User);
             var jobApplication = await _context.JobApplication
                 .Include(j => j.Recruiter)
+                .Include(j => j.User)
+                .Where(j => j.UserId == user.Id)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (jobApplication == null)
             {

@@ -199,6 +199,12 @@ namespace Appli.Migrations
                         principalTable: "Recruiter",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_JobApplication_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -226,22 +232,7 @@ namespace Appli.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "FirstName", "LastName" },
-                values: new object[] { "00000000-ffff-ffff-ffff-ffffffffffff", 0, "f74207b1-80f3-4585-b79f-4dbab37225f9", "ApplicationUser", "deep@patel.com", true, false, null, "DEEP@PATEL.COM", "DEEP@PATEL.COM", "AQAAAAEAACcQAAAAEFcodX1bivXDOwe7WfJgdOsgPpAn2PjE+N7AkZNGyVY//h18AzXawfzlXJ+ZXtvxPA==", null, false, "7f434309-a4d9-48e9-9ebb-8803db794577", false, "deep@patel.com", "Deep", "Patel" });
-
-            migrationBuilder.InsertData(
-                table: "JobApplication",
-                columns: new[] { "Id", "CompanyName", "IsActive", "LastContact", "Notes", "Offer", "Position", "PositionLink", "RecruiterId", "Rejected", "UserId" },
-                values: new object[] { 1, "Google", true, new DateTime(2019, 8, 27, 12, 33, 14, 862, DateTimeKind.Local).AddTicks(6029), "I'm still on the fence about this company, I was hoping for more health coverage than dental", "$1,000,000 and dental", "Full Stack Dev", "www.google.com", null, false, "00000000-ffff-ffff-ffff-ffffffffffff" });
-
-            migrationBuilder.InsertData(
-                table: "JobApplication",
-                columns: new[] { "Id", "CompanyName", "IsActive", "LastContact", "Notes", "Offer", "Position", "PositionLink", "RecruiterId", "Rejected", "UserId" },
-                values: new object[] { 2, "Apple", true, new DateTime(2019, 9, 3, 12, 33, 14, 862, DateTimeKind.Local).AddTicks(8748), "Really like this company, I'm just more of an orange guy", "$1,000,001 and vision", "Front End Dev", "www.apple.com", null, false, "00000000-ffff-ffff-ffff-ffffffffffff" });
-
-            migrationBuilder.InsertData(
-                table: "JobApplication",
-                columns: new[] { "Id", "CompanyName", "IsActive", "LastContact", "Notes", "Offer", "Position", "PositionLink", "RecruiterId", "Rejected", "UserId" },
-                values: new object[] { 3, "Facebook", true, new DateTime(2019, 8, 31, 12, 33, 14, 862, DateTimeKind.Local).AddTicks(8775), "Really dont like this company, pretty sure the CEO is a lizard person", "$1,000,002 and health", "React End Dev", "www.facebook.com", null, false, "00000000-ffff-ffff-ffff-ffffffffffff" });
+                values: new object[] { "00000000-ffff-ffff-ffff-ffffffffffff", 0, "57f05e17-933a-4237-9c42-91b7832e4a6a", "ApplicationUser", "deep@patel.com", true, false, null, "DEEP@PATEL.COM", "DEEP@PATEL.COM", "AQAAAAEAACcQAAAAEBdyf+ln2Xab+8tPIwwWhhVE6KfMAdBNgpJBEyHFR6AF0LXPaCOUe53WNIW7a0EYGg==", null, false, "7f434309-a4d9-48e9-9ebb-8803db794577", false, "deep@patel.com", "Deep", "Patel" });
 
             migrationBuilder.InsertData(
                 table: "Recruiter",
@@ -254,14 +245,29 @@ namespace Appli.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "JobApplication",
+                columns: new[] { "Id", "CompanyName", "IsActive", "LastContact", "Notes", "Offer", "Position", "PositionLink", "RecruiterId", "Rejected", "UserId" },
+                values: new object[] { 1, "Google", true, new DateTime(2019, 8, 30, 9, 21, 5, 833, DateTimeKind.Local).AddTicks(3826), "I'm still on the fence about this company, I was hoping for more health coverage than dental", "$1,000,000 and dental", "Full Stack Dev", "www.google.com", null, false, "00000000-ffff-ffff-ffff-ffffffffffff" });
+
+            migrationBuilder.InsertData(
+                table: "JobApplication",
+                columns: new[] { "Id", "CompanyName", "IsActive", "LastContact", "Notes", "Offer", "Position", "PositionLink", "RecruiterId", "Rejected", "UserId" },
+                values: new object[] { 2, "Apple", true, new DateTime(2019, 9, 6, 9, 21, 5, 833, DateTimeKind.Local).AddTicks(6587), "Really like this company, I'm just more of an orange guy", "$1,000,001 and vision", "Front End Dev", "www.apple.com", null, false, "00000000-ffff-ffff-ffff-ffffffffffff" });
+
+            migrationBuilder.InsertData(
+                table: "JobApplication",
+                columns: new[] { "Id", "CompanyName", "IsActive", "LastContact", "Notes", "Offer", "Position", "PositionLink", "RecruiterId", "Rejected", "UserId" },
+                values: new object[] { 3, "Facebook", true, new DateTime(2019, 9, 3, 9, 21, 5, 833, DateTimeKind.Local).AddTicks(6616), "Really dont like this company, pretty sure the CEO is a lizard person", "$1,000,002 and health", "React End Dev", "www.facebook.com", null, false, "00000000-ffff-ffff-ffff-ffffffffffff" });
+
+            migrationBuilder.InsertData(
                 table: "Interview",
                 columns: new[] { "Id", "Address", "Date", "JobApplicationId", "Notes" },
                 values: new object[,]
                 {
-                    { 1, "510 Old Hickory Blvd", new DateTime(2019, 9, 6, 0, 0, 0, 0, DateTimeKind.Local), 1, "Wear a nice shirt" },
-                    { 2, "50 Hickory Blvd", new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Local), 1, "Wear a really nice shirt" },
-                    { 3, "5100 Old Blvd", new DateTime(2019, 9, 23, 0, 0, 0, 0, DateTimeKind.Local), 2, "Wear a nice shirt like Deep would" },
-                    { 4, "100 Old Town Road", new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Local), 2, "Smile" }
+                    { 1, "510 Old Hickory Blvd", new DateTime(2019, 9, 9, 0, 0, 0, 0, DateTimeKind.Local), 1, "Wear a nice shirt" },
+                    { 2, "50 Hickory Blvd", new DateTime(2019, 9, 19, 0, 0, 0, 0, DateTimeKind.Local), 1, "Wear a really nice shirt" },
+                    { 3, "5100 Old Blvd", new DateTime(2019, 9, 26, 0, 0, 0, 0, DateTimeKind.Local), 2, "Wear a nice shirt like Deep would" },
+                    { 4, "100 Old Town Road", new DateTime(2019, 9, 19, 0, 0, 0, 0, DateTimeKind.Local), 2, "Smile" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -312,6 +318,11 @@ namespace Appli.Migrations
                 name: "IX_JobApplication_RecruiterId",
                 table: "JobApplication",
                 column: "RecruiterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JobApplication_UserId",
+                table: "JobApplication",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -338,13 +349,13 @@ namespace Appli.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "JobApplication");
 
             migrationBuilder.DropTable(
                 name: "Recruiter");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }
