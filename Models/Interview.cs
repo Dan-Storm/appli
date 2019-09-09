@@ -14,6 +14,8 @@ namespace Appli.Models
         [Required]
         public int JobApplicationId { get; set; }
 
+        public JobApplication JobApplication { get; set; }
+
         [Display(Name = "Date")]
         [Required]
         [DataType(DataType.Date)]

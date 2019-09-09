@@ -20,5 +20,7 @@ namespace Appli.Models
 
         [Required]
         public string EmailAddress { get; set; }
+
+        public virtual ICollection<JobApplication> JobApplications { get; set; }
     }
 }

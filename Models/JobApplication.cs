@@ -33,8 +33,9 @@ namespace Appli.Models
         [Required]
         public string Position { get; set; }
 
-        [Display(Name = "Recruiter")]
-        public int RecruiterId { get; set; }
+        public int? RecruiterId { get; set; }
+
+        public Recruiter Recruiter { get; set; }
 
         [Display(Name = "Position Link")]
         public string PositionLink { get; set; }
@@ -55,5 +56,7 @@ namespace Appli.Models
 
         [Display(Name = "Still Active?")]
         public bool IsActive { get; set; }
+        public virtual ICollection<Interview> Interviews { get; set; }
+
     }
 }

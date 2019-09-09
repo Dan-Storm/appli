@@ -5,7 +5,7 @@ using Appli.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-namespace Deep_Sales.Data
+namespace Appli.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
@@ -34,10 +34,16 @@ namespace Deep_Sales.Data
                 .Property(b => b.Date)
                 .HasDefaultValueSql("GETDATE()");
 
-            // Restrict deletion of related product when OrderProducts entry is removed
+            // Restrict deletion of related Recruiter when Job Application entry is removed
             modelBuilder.Entity<Recruiter>()
-                .HasMany(a => a.JobApplication)
-                .WithOne(l => l.Product)
+                .HasMany(a => a.JobApplications)
+                .WithOne(l => l.Recruiter)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Restrict deletion of related Job Application when Interview entry is removed
+            modelBuilder.Entity<JobApplication>()
+                .HasMany(a => a.Interviews)
+                .WithOne(l => l.JobApplication)
                 .OnDelete(DeleteBehavior.Restrict);
 
             ApplicationUser user = new ApplicationUser
