@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Appli.Data;
 using Appli.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Appli.Controllers
 {
@@ -15,16 +16,20 @@ namespace Appli.Controllers
     public class InterviewsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public InterviewsController(ApplicationDbContext context)
+        public InterviewsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+
         }
 
         // GET: Interviews
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Interview.Include(i => i.JobApplication);
+            var applicationDbContext = _context.Interview
+                .Include(i => i.JobApplication);
             return View(await applicationDbContext.ToListAsync());
         }
 

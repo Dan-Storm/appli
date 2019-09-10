@@ -46,7 +46,7 @@ namespace Appli.Migrations
                         {
                             Id = 1,
                             Address = "510 Old Hickory Blvd",
-                            Date = new DateTime(2019, 9, 6, 0, 0, 0, 0, DateTimeKind.Local),
+                            Date = new DateTime(2019, 9, 9, 0, 0, 0, 0, DateTimeKind.Local),
                             JobApplicationId = 1,
                             Notes = "Wear a nice shirt"
                         },
@@ -54,7 +54,7 @@ namespace Appli.Migrations
                         {
                             Id = 2,
                             Address = "50 Hickory Blvd",
-                            Date = new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Local),
+                            Date = new DateTime(2019, 9, 19, 0, 0, 0, 0, DateTimeKind.Local),
                             JobApplicationId = 1,
                             Notes = "Wear a really nice shirt"
                         },
@@ -62,7 +62,7 @@ namespace Appli.Migrations
                         {
                             Id = 3,
                             Address = "5100 Old Blvd",
-                            Date = new DateTime(2019, 9, 23, 0, 0, 0, 0, DateTimeKind.Local),
+                            Date = new DateTime(2019, 9, 26, 0, 0, 0, 0, DateTimeKind.Local),
                             JobApplicationId = 2,
                             Notes = "Wear a nice shirt like Deep would"
                         },
@@ -70,7 +70,7 @@ namespace Appli.Migrations
                         {
                             Id = 4,
                             Address = "100 Old Town Road",
-                            Date = new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Local),
+                            Date = new DateTime(2019, 9, 19, 0, 0, 0, 0, DateTimeKind.Local),
                             JobApplicationId = 2,
                             Notes = "Smile"
                         });
@@ -122,6 +122,8 @@ namespace Appli.Migrations
 
                     b.HasIndex("RecruiterId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("JobApplication");
 
                     b.HasData(
@@ -131,7 +133,7 @@ namespace Appli.Migrations
                             CompanyName = "Google",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
-                            LastContact = new DateTime(2019, 8, 27, 12, 33, 14, 862, DateTimeKind.Local).AddTicks(6029),
+                            LastContact = new DateTime(2019, 8, 30, 9, 21, 5, 833, DateTimeKind.Local).AddTicks(3826),
                             NextInterview = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Notes = "I'm still on the fence about this company, I was hoping for more health coverage than dental",
                             Offer = "$1,000,000 and dental",
@@ -146,7 +148,7 @@ namespace Appli.Migrations
                             CompanyName = "Apple",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
-                            LastContact = new DateTime(2019, 9, 3, 12, 33, 14, 862, DateTimeKind.Local).AddTicks(8748),
+                            LastContact = new DateTime(2019, 9, 6, 9, 21, 5, 833, DateTimeKind.Local).AddTicks(6587),
                             NextInterview = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Notes = "Really like this company, I'm just more of an orange guy",
                             Offer = "$1,000,001 and vision",
@@ -161,7 +163,7 @@ namespace Appli.Migrations
                             CompanyName = "Facebook",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
-                            LastContact = new DateTime(2019, 8, 31, 12, 33, 14, 862, DateTimeKind.Local).AddTicks(8775),
+                            LastContact = new DateTime(2019, 9, 3, 9, 21, 5, 833, DateTimeKind.Local).AddTicks(6616),
                             NextInterview = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Notes = "Really dont like this company, pretty sure the CEO is a lizard person",
                             Offer = "$1,000,002 and health",
@@ -403,13 +405,13 @@ namespace Appli.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f74207b1-80f3-4585-b79f-4dbab37225f9",
+                            ConcurrencyStamp = "57f05e17-933a-4237-9c42-91b7832e4a6a",
                             Email = "deep@patel.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "DEEP@PATEL.COM",
                             NormalizedUserName = "DEEP@PATEL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFcodX1bivXDOwe7WfJgdOsgPpAn2PjE+N7AkZNGyVY//h18AzXawfzlXJ+ZXtvxPA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBdyf+ln2Xab+8tPIwwWhhVE6KfMAdBNgpJBEyHFR6AF0LXPaCOUe53WNIW7a0EYGg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
                             TwoFactorEnabled = false,
@@ -433,6 +435,11 @@ namespace Appli.Migrations
                         .WithMany("JobApplications")
                         .HasForeignKey("RecruiterId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Appli.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
