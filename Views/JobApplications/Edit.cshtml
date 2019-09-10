@@ -14,11 +14,6 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="NextInterview" class="control-label"></label>
-                <input asp-for="NextInterview" class="form-control" />
-                <span asp-validation-for="NextInterview" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="CompanyName" class="control-label"></label>
                 <input asp-for="CompanyName" class="form-control" />
                 <span asp-validation-for="CompanyName" class="text-danger"></span>
@@ -37,6 +32,11 @@
                 <label asp-for="PositionLink" class="control-label"></label>
                 <input asp-for="PositionLink" class="form-control" />
                 <span asp-validation-for="PositionLink" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NextInterview" class="control-label"></label>
+                <input asp-for="NextInterview" class="form-control" />
+                <span asp-validation-for="NextInterview" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
