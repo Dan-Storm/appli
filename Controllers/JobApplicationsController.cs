@@ -30,6 +30,7 @@ namespace Appli.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var applicationDbContext = _context.JobApplication
                 .Include(j => j.Recruiter)
+                .Include(j => j.Interviews)
                 .Include(j => j.User)
                 .Where(j => j.UserId == user.Id); 
             return View(await applicationDbContext.ToListAsync());
@@ -45,6 +46,7 @@ namespace Appli.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var jobApplication = await _context.JobApplication
                 .Include(j => j.Recruiter)
+                .Include(j => j.Interviews)
                 .Include(j => j.User)
                 .Where(j => j.UserId == user.Id)
                 .FirstOrDefaultAsync(m => m.Id == id);

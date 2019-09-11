@@ -22,8 +22,27 @@ namespace Appli.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime DateCreated { get; set; }
 
+        [NotMapped]
+        private DateTime? _nextInterview = null;
+
+        [NotMapped]
         [Display(Name = "Next Interview")]
-        public DateTime NextInterview { get; set; }
+        public DateTime? NextInterview { get
+            { foreach( Interview i in Interviews)
+                {
+
+                    if (i.Date >= DateTime.Now.Date && i.Date <= _nextInterview)
+                    {
+                        _nextInterview = i.Date;
+                    }
+                    else if (i.Date >= DateTime.Now.Date)
+                    {
+                        _nextInterview = i.Date;
+                    }
+                }
+                return _nextInterview;
+            }
+        }
 
         [Display(Name = "Company Name")]
         [StringLength(30)]

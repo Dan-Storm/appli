@@ -21,10 +21,6 @@ namespace Appli.Data
             modelBuilder.Entity<JobApplication>()
                 .Property(b => b.DateCreated)
                 .HasDefaultValueSql("GETDATE()");
-            //create a next interview date for JobApplication
-            modelBuilder.Entity<JobApplication>()
-                .Property(b => b.NextInterview)
-                .HasDefaultValueSql("GETDATE()");
             //create a last contact date for JobApplication
             modelBuilder.Entity<JobApplication>()
                 .Property(b => b.LastContact)
