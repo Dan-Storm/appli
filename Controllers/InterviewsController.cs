@@ -26,10 +26,11 @@ namespace Appli.Controllers
         }
 
         // GET: Interviews
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
             var applicationDbContext = _context.Interview
-                .Include(i => i.JobApplication);
+                .Include(i => i.JobApplication)
+                .Where(i => i.JobApplicationId == id);
             return View(await applicationDbContext.ToListAsync());
         }
 

@@ -41,6 +41,11 @@
             @Html.DisplayFor(model => model.NextInterview)
         </dd>
         <dt class="col-sm-2">
+            <a asp-controller="Interviews" asp-action="Index" asp-route-id="@Model.Id">All Interviews</a> 
+        </dt>
+        <dd class="col-sm-10">
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Rejected)
         </dt>
         <dd class="col-sm-10">
