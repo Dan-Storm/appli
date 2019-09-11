@@ -124,7 +124,7 @@ namespace Appli.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { id = interview.JobApplicationId});
             }
             ViewData["JobApplicationId"] = new SelectList(_context.JobApplication, "Id", "CompanyName", interview.JobApplicationId);
             return View(interview);
