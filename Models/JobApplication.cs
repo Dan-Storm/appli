@@ -12,6 +12,9 @@ namespace Appli.Models
         [Key]
         public int Id { get; set; }
 
+        [NotMapped]
+        private DateTime? _nextInterview = null;
+
         [Required]
         public string UserId { get; set; }
 
@@ -21,28 +24,6 @@ namespace Appli.Models
         [DataType(DataType.Date)]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime DateCreated { get; set; }
-
-        [NotMapped]
-        private DateTime? _nextInterview = null;
-
-        [NotMapped]
-        [Display(Name = "Next Interview")]
-        public DateTime? NextInterview { get
-            { foreach( Interview i in Interviews)
-                {
-
-                    if (i.Date >= DateTime.Now.Date && i.Date <= _nextInterview)
-                    {
-                        _nextInterview = i.Date;
-                    }
-                    else if (i.Date >= DateTime.Now.Date)
-                    {
-                        _nextInterview = i.Date;
-                    }
-                }
-                return _nextInterview;
-            }
-        }
 
         [Display(Name = "Company Name")]
         [StringLength(30)]
@@ -79,5 +60,30 @@ namespace Appli.Models
         public bool IsActive { get; set; }
         public virtual ICollection<Interview> Interviews { get; set; }
 
+        [NotMapped]
+        [Display(Name = "Next Interview")]
+        public DateTime? NextInterview
+        {
+            get
+            {
+                if (Interviews == null)
+                {
+                    return null;
+                }
+                foreach (Interview i in Interviews)
+                {
+
+                    if (i.Date >= DateTime.Now.Date && i.Date <= _nextInterview)
+                    {
+                        _nextInterview = i.Date;
+                    }
+                    else if (i.Date >= DateTime.Now.Date)
+                    {
+                        _nextInterview = i.Date;
+                    }
+                }
+                return _nextInterview;
+            }
+        }
     }
 }
