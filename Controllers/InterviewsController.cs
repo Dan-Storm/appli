@@ -71,7 +71,7 @@ namespace Appli.Controllers
             {
                 _context.Add(interview);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { id = interview.JobApplicationId });
             }
             ViewData["JobApplicationId"] = new SelectList(_context.JobApplication, "Id", "CompanyName", interview.JobApplicationId);
             return View(interview);
@@ -157,7 +157,7 @@ namespace Appli.Controllers
             var interview = await _context.Interview.FindAsync(id);
             _context.Interview.Remove(interview);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { id = interview.JobApplicationId });
         }
 
         private bool InterviewExists(int id)
