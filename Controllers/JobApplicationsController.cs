@@ -72,8 +72,11 @@ namespace Appli.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,DateCreated,NextInterview,CompanyName,Position,RecruiterId,PositionLink,Rejected,Offer,LastContact,Notes,IsActive")] JobApplication jobApplication)
         {
+            ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
+                var user = await GetUserAsync();
+                jobApplication.UserId = user.Id;
                 _context.Add(jobApplication);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

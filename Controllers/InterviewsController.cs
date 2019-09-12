@@ -28,10 +28,15 @@ namespace Appli.Controllers
         // GET: Interviews
         public async Task<IActionResult> Index(int? id)
         {
-            var applicationDbContext = _context.Interview
+            var applicationDbContext = await _context.Interview
                 .Include(i => i.JobApplication)
-                .Where(i => i.JobApplicationId == id);
-            return View(await applicationDbContext.ToListAsync());
+                .Where(i => i.JobApplicationId == id)
+                .ToListAsync();
+            if (applicationDbContext.Count == 0)
+            {
+                return RedirectToAction(nameof(Create));
+            }
+            return View(applicationDbContext);
         }
 
         // GET: Interviews/Details/5
