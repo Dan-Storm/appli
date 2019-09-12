@@ -26,10 +26,11 @@ namespace Appli.Controllers
         }
 
         // GET: Interviews
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
             var applicationDbContext = _context.Interview
-                .Include(i => i.JobApplication);
+                .Include(i => i.JobApplication)
+                .Where(i => i.JobApplicationId == id);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -70,7 +71,7 @@ namespace Appli.Controllers
             {
                 _context.Add(interview);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { id = interview.JobApplicationId });
             }
             ViewData["JobApplicationId"] = new SelectList(_context.JobApplication, "Id", "CompanyName", interview.JobApplicationId);
             return View(interview);
@@ -123,7 +124,7 @@ namespace Appli.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { id = interview.JobApplicationId});
             }
             ViewData["JobApplicationId"] = new SelectList(_context.JobApplication, "Id", "CompanyName", interview.JobApplicationId);
             return View(interview);
@@ -156,7 +157,7 @@ namespace Appli.Controllers
             var interview = await _context.Interview.FindAsync(id);
             _context.Interview.Remove(interview);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { id = interview.JobApplicationId });
         }
 
         private bool InterviewExists(int id)

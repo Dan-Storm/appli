@@ -30,6 +30,7 @@ namespace Appli.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var applicationDbContext = _context.JobApplication
                 .Include(j => j.Recruiter)
+                .Include(j => j.Interviews)
                 .Include(j => j.User)
                 .Where(j => j.UserId == user.Id); 
             return View(await applicationDbContext.ToListAsync());
@@ -45,6 +46,7 @@ namespace Appli.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var jobApplication = await _context.JobApplication
                 .Include(j => j.Recruiter)
+                .Include(j => j.Interviews)
                 .Include(j => j.User)
                 .Where(j => j.UserId == user.Id)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -88,7 +90,9 @@ namespace Appli.Controllers
                 return NotFound();
             }
 
-            var jobApplication = await _context.JobApplication.FindAsync(id);
+            var jobApplication = await _context.JobApplication
+               .Include(j => j.Interviews)
+               .FirstOrDefaultAsync(m => m.Id == id);
             if (jobApplication == null)
             {
                 return NotFound();
@@ -98,21 +102,22 @@ namespace Appli.Controllers
         }
 
         // POST: JobApplications/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,DateCreated,NextInterview,CompanyName,Position,RecruiterId,PositionLink,Rejected,Offer,LastContact,Notes,IsActive")] JobApplication jobApplication)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,DateCreated,CompanyName,Position,RecruiterId,PositionLink,Rejected,Offer,LastContact,Notes,IsActive")] JobApplication jobApplication)
         {
             if (id != jobApplication.Id)
             {
                 return NotFound();
             }
 
+            ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var user = await GetUserAsync();
+                    jobApplication.UserId = user.Id;
                     _context.Update(jobApplication);
                     await _context.SaveChangesAsync();
                 }
@@ -166,6 +171,11 @@ namespace Appli.Controllers
         private bool JobApplicationExists(int id)
         {
             return _context.JobApplication.Any(e => e.Id == id);
+        }
+
+        private Task<ApplicationUser> GetUserAsync()
+        {
+            return _userManager.GetUserAsync(HttpContext.User);
         }
     }
 }
