@@ -61,8 +61,13 @@ namespace Appli.Controllers
         // GET: JobApplications/Create
         public IActionResult Create()
         {
-            ViewData["RecruiterId"] = new SelectList(_context.Recruiter, "Id", "EmailAddress");
-            return View();
+            var recruiterList = new SelectList(_context.Recruiter, "Id", "FullName").ToList();
+            recruiterList.Insert(0, new SelectListItem
+            {
+                Text = "Select Recruiter",
+                Value = "null"
+            });
+            ViewData["RecruiterId"] = recruiterList; return View();
         }
 
         // POST: JobApplications/Create
@@ -70,9 +75,15 @@ namespace Appli.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,DateCreated,NextInterview,CompanyName,Position,RecruiterId,PositionLink,Rejected,Offer,LastContact,Notes,IsActive")] JobApplication jobApplication)
+        public async Task<IActionResult> Create([Bind("Id,UserId,DateCreated,CompanyName,Position,RecruiterId,PositionLink,Rejected,Offer,LastContact,Notes,IsActive")] JobApplication jobApplication)
         {
+            if (jobApplication.RecruiterId.ToString() == "null")
+            {
+                jobApplication.RecruiterId = null;
+            }
+
             ModelState.Remove("UserId");
+            ModelState.Remove("RecruiterId");
             if (ModelState.IsValid)
             {
                 var user = await GetUserAsync();
@@ -81,7 +92,13 @@ namespace Appli.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RecruiterId"] = new SelectList(_context.Recruiter, "Id", "EmailAddress", jobApplication.RecruiterId);
+            var recruiterList = new SelectList(_context.Recruiter, "Id", "FullName", jobApplication.RecruiterId).ToList();
+            recruiterList.Insert(0, new SelectListItem
+            {
+                Text = "Select Recruiter",
+                Value = "null"
+            });
+            ViewData["RecruiterId"] = recruiterList;
             return View(jobApplication);
         }
 
@@ -100,7 +117,13 @@ namespace Appli.Controllers
             {
                 return NotFound();
             }
-            ViewData["RecruiterId"] = new SelectList(_context.Recruiter, "Id", "EmailAddress", jobApplication.RecruiterId);
+            var recruiterList = new SelectList(_context.Recruiter, "Id", "FullName", jobApplication.RecruiterId).ToList();
+            recruiterList.Insert(0, new SelectListItem
+            {
+                Text = "Select Recruiter",
+                Value = "null"
+            });
+            ViewData["RecruiterId"] = recruiterList;
             return View(jobApplication);
         }
 
@@ -109,12 +132,18 @@ namespace Appli.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,DateCreated,CompanyName,Position,RecruiterId,PositionLink,Rejected,Offer,LastContact,Notes,IsActive")] JobApplication jobApplication)
         {
+            if (jobApplication.RecruiterId.ToString() == "null")
+            {
+                jobApplication.RecruiterId = null;
+            }
+
             if (id != jobApplication.Id)
             {
                 return NotFound();
             }
 
             ModelState.Remove("UserId");
+            ModelState.Remove("RecruiterId");
             if (ModelState.IsValid)
             {
                 try
@@ -137,7 +166,13 @@ namespace Appli.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RecruiterId"] = new SelectList(_context.Recruiter, "Id", "EmailAddress", jobApplication.RecruiterId);
+            var recruiterList = new SelectList(_context.Recruiter, "Id", "FullName", jobApplication.RecruiterId).ToList();
+            recruiterList.Insert(0, new SelectListItem
+            {
+                Text = "Select Recruiter",
+                Value = "null"
+            });
+            ViewData["RecruiterId"] = recruiterList;
             return View(jobApplication);
         }
 

@@ -16,12 +16,12 @@ namespace Appli.Controllers
     public class InterviewsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        //private readonly UserManager<ApplicationUser> _userManager;
 
-        public InterviewsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public InterviewsController(ApplicationDbContext context/*, UserManager<ApplicationUser> userManager*/)
         {
             _context = context;
-            _userManager = userManager;
+            //_userManager = userManager;
 
         }
 
