@@ -24,7 +24,9 @@ namespace Appli.Controllers
         // GET: Recruiters
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Recruiter.ToListAsync());
+            return View(await _context.Recruiter
+                .Where(r => r.IsActive == true)
+                .ToListAsync());
         }
 
         // GET: Recruiters/Details/5
@@ -56,10 +58,11 @@ namespace Appli.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FullName,PhoneNumber,EmailAddress")] Recruiter recruiter)
+        public async Task<IActionResult> Create([Bind("Id,FullName,PhoneNumber,EmailAddress,IsActive")] Recruiter recruiter)
         {
             if (ModelState.IsValid)
             {
+                recruiter.IsActive = true;
                 _context.Add(recruiter);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -142,7 +145,8 @@ namespace Appli.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var recruiter = await _context.Recruiter.FindAsync(id);
-            _context.Recruiter.Remove(recruiter);
+            recruiter.IsActive = false;
+            _context.Recruiter.Update(recruiter);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

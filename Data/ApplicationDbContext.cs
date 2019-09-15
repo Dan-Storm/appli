@@ -40,7 +40,7 @@ namespace Appli.Data
             modelBuilder.Entity<JobApplication>()
                 .HasMany(a => a.Interviews)
                 .WithOne(l => l.JobApplication)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             ApplicationUser user = new ApplicationUser
             {
@@ -99,6 +99,7 @@ namespace Appli.Data
                     FullName = "Janki Patel",
                     PhoneNumber = "615-224-2345",
                     EmailAddress = "janki@deep.com",
+                    IsActive = true,
                 },
                 new Recruiter()
                 {
@@ -106,6 +107,8 @@ namespace Appli.Data
                     FullName = "Anuj Patel",
                     PhoneNumber = "615-334-4565",
                     EmailAddress = "anuj@deep.com",
+                    IsActive = true,
+
                 },
                 new Recruiter()
                 {
@@ -113,6 +116,7 @@ namespace Appli.Data
                     FullName = "Shreeda Patel",
                     PhoneNumber = "847-123-4565",
                     EmailAddress = "Shreeda@deep.com",
+                    IsActive = true,
                 }
             );
             modelBuilder.Entity<JobApplication>().HasData(

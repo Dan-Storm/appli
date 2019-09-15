@@ -61,7 +61,9 @@ namespace Appli.Controllers
         // GET: JobApplications/Create
         public IActionResult Create()
         {
-            var recruiterList = new SelectList(_context.Recruiter, "Id", "FullName").ToList();
+            var recruiterList = new SelectList(_context.Recruiter
+                .Where(r => r.IsActive == true), "Id", "FullName")
+                .ToList();
             recruiterList.Insert(0, new SelectListItem
             {
                 Text = "Select Recruiter",
@@ -84,15 +86,19 @@ namespace Appli.Controllers
 
             ModelState.Remove("UserId");
             ModelState.Remove("RecruiterId");
+            ModelState.Remove("IsActive");
             if (ModelState.IsValid)
             {
                 var user = await GetUserAsync();
                 jobApplication.UserId = user.Id;
+                jobApplication.IsActive = true;
                 _context.Add(jobApplication);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            var recruiterList = new SelectList(_context.Recruiter, "Id", "FullName", jobApplication.RecruiterId).ToList();
+            var recruiterList = new SelectList(_context.Recruiter
+                .Where(r => r.IsActive == true), "Id", "FullName")
+                .ToList();
             recruiterList.Insert(0, new SelectListItem
             {
                 Text = "Select Recruiter",
@@ -117,7 +123,9 @@ namespace Appli.Controllers
             {
                 return NotFound();
             }
-            var recruiterList = new SelectList(_context.Recruiter, "Id", "FullName", jobApplication.RecruiterId).ToList();
+            var recruiterList = new SelectList(_context.Recruiter
+                .Where(r => r.IsActive == true), "Id", "FullName")
+                .ToList();
             recruiterList.Insert(0, new SelectListItem
             {
                 Text = "Select Recruiter",
@@ -166,7 +174,9 @@ namespace Appli.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            var recruiterList = new SelectList(_context.Recruiter, "Id", "FullName", jobApplication.RecruiterId).ToList();
+            var recruiterList = new SelectList(_context.Recruiter
+                .Where(r => r.IsActive == true), "Id", "FullName")
+                .ToList();
             recruiterList.Insert(0, new SelectListItem
             {
                 Text = "Select Recruiter",
@@ -201,7 +211,7 @@ namespace Appli.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var jobApplication = await _context.JobApplication.FindAsync(id);
-            _context.JobApplication.Remove(jobApplication);
+            _context.JobApplication.Update(jobApplication);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

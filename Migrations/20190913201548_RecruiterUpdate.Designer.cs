@@ -4,14 +4,16 @@ using Appli.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Appli.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190913201548_RecruiterUpdate")]
+    partial class RecruiterUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,7 +131,7 @@ namespace Appli.Migrations
                             CompanyName = "Google",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
-                            LastContact = new DateTime(2019, 9, 3, 15, 21, 9, 446, DateTimeKind.Local).AddTicks(7810),
+                            LastContact = new DateTime(2019, 9, 3, 15, 15, 47, 500, DateTimeKind.Local).AddTicks(9322),
                             Notes = "I'm still on the fence about this company, I was hoping for more health coverage than dental",
                             Offer = "$1,000,000 and dental",
                             Position = "Full Stack Dev",
@@ -143,7 +145,7 @@ namespace Appli.Migrations
                             CompanyName = "Apple",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
-                            LastContact = new DateTime(2019, 9, 10, 15, 21, 9, 447, DateTimeKind.Local).AddTicks(918),
+                            LastContact = new DateTime(2019, 9, 10, 15, 15, 47, 501, DateTimeKind.Local).AddTicks(2330),
                             Notes = "Really like this company, I'm just more of an orange guy",
                             Offer = "$1,000,001 and vision",
                             Position = "Front End Dev",
@@ -157,7 +159,7 @@ namespace Appli.Migrations
                             CompanyName = "Facebook",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
-                            LastContact = new DateTime(2019, 9, 7, 15, 21, 9, 447, DateTimeKind.Local).AddTicks(948),
+                            LastContact = new DateTime(2019, 9, 7, 15, 15, 47, 501, DateTimeKind.Local).AddTicks(2358),
                             Notes = "Really dont like this company, pretty sure the CEO is a lizard person",
                             Offer = "$1,000,002 and health",
                             Position = "React End Dev",
@@ -195,7 +197,7 @@ namespace Appli.Migrations
                             Id = 1,
                             EmailAddress = "janki@deep.com",
                             FullName = "Janki Patel",
-                            IsActive = true,
+                            IsActive = false,
                             PhoneNumber = "615-224-2345"
                         },
                         new
@@ -203,7 +205,7 @@ namespace Appli.Migrations
                             Id = 2,
                             EmailAddress = "anuj@deep.com",
                             FullName = "Anuj Patel",
-                            IsActive = true,
+                            IsActive = false,
                             PhoneNumber = "615-334-4565"
                         },
                         new
@@ -211,7 +213,7 @@ namespace Appli.Migrations
                             Id = 3,
                             EmailAddress = "Shreeda@deep.com",
                             FullName = "Shreeda Patel",
-                            IsActive = true,
+                            IsActive = false,
                             PhoneNumber = "847-123-4565"
                         });
                 });
@@ -403,13 +405,13 @@ namespace Appli.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "384fb64d-f902-49c4-a85b-d38ff0294621",
+                            ConcurrencyStamp = "e9c257f4-9d7b-49d5-adcc-fc4d83258242",
                             Email = "deep@patel.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "DEEP@PATEL.COM",
                             NormalizedUserName = "DEEP@PATEL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEITRSomA5ZUJuMqA0stRUjuJk92zTs4+DbCOOHjvqSP/F8y/6enyslxMx9uFx1Dh4A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFgVpe02TuIbFzR8JpqEPbXK7LOTA1+IcSmifvhb6/qfG8Kr42/tu1C3xc0mMb5Tnw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
                             TwoFactorEnabled = false,
