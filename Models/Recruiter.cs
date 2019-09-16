@@ -13,6 +13,9 @@ namespace Appli.Models
         public int Id { get; set; }
 
         [Required]
+        public string UserId { get; set; }
+
+        [Required]
         [StringLength(40)]
         public string FullName { get; set; }
 

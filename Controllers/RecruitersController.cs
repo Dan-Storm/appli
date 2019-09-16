@@ -8,13 +8,22 @@ using Microsoft.EntityFrameworkCore;
 using Appli.Data;
 using Appli.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Appli.Controllers
 {
     [Authorize]
     public class RecruitersController : Controller
     {
+
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public RecruitersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        {
+            _context = context;
+            _userManager = userManager;
+        }
 
         public RecruitersController(ApplicationDbContext context)
         {
@@ -24,8 +33,10 @@ namespace Appli.Controllers
         // GET: Recruiters
         public async Task<IActionResult> Index()
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
             return View(await _context.Recruiter
                 .Where(r => r.IsActive == true)
+                .Where(r => r.UserId == user.Id)
                 .ToListAsync());
         }
 
@@ -60,8 +71,11 @@ namespace Appli.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,FullName,PhoneNumber,EmailAddress,IsActive")] Recruiter recruiter)
         {
+            ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                recruiter.UserId = user.Id;
                 recruiter.IsActive = true;
                 _context.Add(recruiter);
                 await _context.SaveChangesAsync();
@@ -154,6 +168,11 @@ namespace Appli.Controllers
         private bool RecruiterExists(int id)
         {
             return _context.Recruiter.Any(e => e.Id == id);
+        }
+
+        private Task<ApplicationUser> GetUserAsync()
+        {
+            return _userManager.GetUserAsync(HttpContext.User);
         }
     }
 }

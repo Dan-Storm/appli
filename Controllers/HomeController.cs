@@ -27,13 +27,20 @@ namespace Appli.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var applicationDbContext = _context.JobApplication
-                .Include(j => j.Recruiter)
-                .Include(j => j.Interviews)
-                .Include(j => j.User)
-                .Where(j => j.UserId == user.Id)
-                .Where(j => j.IsActive == true);
-            return View(await applicationDbContext.ToListAsync());
+            if (user != null)
+            {
+                var applicationDbContext = _context.JobApplication
+                    .Include(j => j.Recruiter)
+                    .Include(j => j.Interviews)
+                    .Include(j => j.User)
+                    .Where(j => j.UserId == user.Id)
+                    .Where(j => j.IsActive == true);
+                return View(await applicationDbContext.ToListAsync());
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public IActionResult Privacy()
