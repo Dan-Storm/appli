@@ -25,11 +25,6 @@ namespace Appli.Controllers
             _userManager = userManager;
         }
 
-        public RecruitersController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
         // GET: Recruiters
         public async Task<IActionResult> Index()
         {

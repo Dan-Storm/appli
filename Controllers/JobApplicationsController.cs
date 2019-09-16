@@ -59,9 +59,11 @@ namespace Appli.Controllers
         }
 
         // GET: JobApplications/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
             var recruiterList = new SelectList(_context.Recruiter
+                .Where(r => r.UserId == user.Id) 
                 .Where(r => r.IsActive == true), "Id", "FullName")
                 .ToList();
             recruiterList.Insert(0, new SelectListItem
@@ -123,7 +125,9 @@ namespace Appli.Controllers
             {
                 return NotFound();
             }
+            var user = await _userManager.GetUserAsync(HttpContext.User);
             var recruiterList = new SelectList(_context.Recruiter
+                .Where(r => r.UserId == user.Id)
                 .Where(r => r.IsActive == true), "Id", "FullName")
                 .ToList();
             recruiterList.Insert(0, new SelectListItem
@@ -211,7 +215,7 @@ namespace Appli.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var jobApplication = await _context.JobApplication.FindAsync(id);
-            _context.JobApplication.Update(jobApplication);
+            _context.JobApplication.Remove(jobApplication);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
