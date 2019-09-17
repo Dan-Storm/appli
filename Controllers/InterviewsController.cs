@@ -34,7 +34,7 @@ namespace Appli.Controllers
                 .ToListAsync();
             if (applicationDbContext.Count == 0)
             {
-                return RedirectToAction(nameof(Create));
+                return RedirectToAction(nameof(Create), new { JobApplicationId = id });
             }
             return View(applicationDbContext);
         }
@@ -59,9 +59,10 @@ namespace Appli.Controllers
         }
 
         // GET: Interviews/Create
-        public IActionResult Create()
+        public IActionResult Create(int? JobApplicationId)
         {
-            ViewData["JobApplicationId"] = new SelectList(_context.JobApplication, "Id", "CompanyName");
+
+            ViewData["JobApplicationId"] = JobApplicationId;
             return View();
         }
 

@@ -100,17 +100,21 @@ namespace Appli.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,PhoneNumber,EmailAddress")] Recruiter recruiter)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,PhoneNumber,EmailAddress,IsActive")] Recruiter recruiter)
         {
             if (id != recruiter.Id)
             {
                 return NotFound();
             }
 
+            ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var user = await _userManager.GetUserAsync(HttpContext.User);
+                    recruiter.UserId = user.Id;
+                    recruiter.IsActive = true;
                     _context.Update(recruiter);
                     await _context.SaveChangesAsync();
                 }

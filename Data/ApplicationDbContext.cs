@@ -36,7 +36,7 @@ namespace Appli.Data
                 .WithOne(l => l.Recruiter)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Restrict deletion of related Job Application when Interview entry is removed
+            // Cascades deletion of related Job Application when Interview entry is removed
             modelBuilder.Entity<JobApplication>()
                 .HasMany(a => a.Interviews)
                 .WithOne(l => l.JobApplication)
