@@ -16,22 +16,27 @@ namespace Appli.Controllers
     public class InterviewsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        //private readonly UserManager<ApplicationUser> _userManager;
 
-        public InterviewsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public InterviewsController(ApplicationDbContext context/*, UserManager<ApplicationUser> userManager*/)
         {
             _context = context;
-            _userManager = userManager;
+            //_userManager = userManager;
 
         }
 
         // GET: Interviews
         public async Task<IActionResult> Index(int? id)
         {
-            var applicationDbContext = _context.Interview
+            var applicationDbContext = await _context.Interview
                 .Include(i => i.JobApplication)
-                .Where(i => i.JobApplicationId == id);
-            return View(await applicationDbContext.ToListAsync());
+                .Where(i => i.JobApplicationId == id)
+                .ToListAsync();
+            if (applicationDbContext.Count == 0)
+            {
+                return RedirectToAction(nameof(Create), new { JobApplicationId = id });
+            }
+            return View(applicationDbContext);
         }
 
         // GET: Interviews/Details/5
@@ -54,9 +59,10 @@ namespace Appli.Controllers
         }
 
         // GET: Interviews/Create
-        public IActionResult Create()
+        public IActionResult Create(int? JobApplicationId)
         {
-            ViewData["JobApplicationId"] = new SelectList(_context.JobApplication, "Id", "CompanyName");
+
+            ViewData["JobApplicationId"] = JobApplicationId;
             return View();
         }
 

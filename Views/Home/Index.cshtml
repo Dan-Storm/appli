@@ -1,8 +1,90 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using Appli.Models;
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@model IEnumerable<Appli.Models.JobApplication>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@if (SignInManager.IsSignedIn(User))
+{
+
+    <div class="text-center">
+        <h3 class="display-4">Welcome APPLi. Let's get you hired!</h3>
+    </div>
+
+    <p>
+        <a asp-controller="JobApplications" asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CompanyName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Position)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Recruiter)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PositionLink)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NextInterview)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Offer)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastContact)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+                <tr class="jobApp">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CompanyName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Position)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Recruiter.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PositionLink)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NextInterview)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Offer)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastContact)
+                    </td>
+                    <td>
+                        <a asp-controller="JobApplications" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-controller="JobApplications" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-controller="JobApplications" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+else
+{
+    <p>Sorry! You must be logged in to see that!</p>
+}

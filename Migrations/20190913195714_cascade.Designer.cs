@@ -4,14 +4,16 @@ using Appli.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Appli.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190913195714_cascade")]
+    partial class cascade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,7 +48,7 @@ namespace Appli.Migrations
                         {
                             Id = 1,
                             Address = "510 Old Hickory Blvd",
-                            Date = new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Local),
+                            Date = new DateTime(2019, 9, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             JobApplicationId = 1,
                             Notes = "Wear a nice shirt"
                         },
@@ -54,7 +56,7 @@ namespace Appli.Migrations
                         {
                             Id = 2,
                             Address = "50 Hickory Blvd",
-                            Date = new DateTime(2019, 9, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            Date = new DateTime(2019, 9, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             JobApplicationId = 1,
                             Notes = "Wear a really nice shirt"
                         },
@@ -62,7 +64,7 @@ namespace Appli.Migrations
                         {
                             Id = 3,
                             Address = "5100 Old Blvd",
-                            Date = new DateTime(2019, 10, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            Date = new DateTime(2019, 9, 30, 0, 0, 0, 0, DateTimeKind.Local),
                             JobApplicationId = 2,
                             Notes = "Wear a nice shirt like Deep would"
                         },
@@ -70,7 +72,7 @@ namespace Appli.Migrations
                         {
                             Id = 4,
                             Address = "100 Old Town Road",
-                            Date = new DateTime(2019, 9, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            Date = new DateTime(2019, 9, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             JobApplicationId = 2,
                             Notes = "Smile"
                         });
@@ -129,7 +131,7 @@ namespace Appli.Migrations
                             CompanyName = "Google",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
-                            LastContact = new DateTime(2019, 9, 6, 14, 27, 27, 217, DateTimeKind.Local).AddTicks(9299),
+                            LastContact = new DateTime(2019, 9, 3, 14, 57, 12, 734, DateTimeKind.Local).AddTicks(1512),
                             Notes = "I'm still on the fence about this company, I was hoping for more health coverage than dental",
                             Offer = "$1,000,000 and dental",
                             Position = "Full Stack Dev",
@@ -143,7 +145,7 @@ namespace Appli.Migrations
                             CompanyName = "Apple",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
-                            LastContact = new DateTime(2019, 9, 13, 14, 27, 27, 218, DateTimeKind.Local).AddTicks(2114),
+                            LastContact = new DateTime(2019, 9, 10, 14, 57, 12, 734, DateTimeKind.Local).AddTicks(6272),
                             Notes = "Really like this company, I'm just more of an orange guy",
                             Offer = "$1,000,001 and vision",
                             Position = "Front End Dev",
@@ -157,7 +159,7 @@ namespace Appli.Migrations
                             CompanyName = "Facebook",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
-                            LastContact = new DateTime(2019, 9, 10, 14, 27, 27, 218, DateTimeKind.Local).AddTicks(2144),
+                            LastContact = new DateTime(2019, 9, 7, 14, 57, 12, 734, DateTimeKind.Local).AddTicks(6310),
                             Notes = "Really dont like this company, pretty sure the CEO is a lizard person",
                             Offer = "$1,000,002 and health",
                             Position = "React End Dev",
@@ -180,12 +182,7 @@ namespace Appli.Migrations
                         .IsRequired()
                         .HasMaxLength(40);
 
-                    b.Property<bool>("IsActive");
-
                     b.Property<string>("PhoneNumber")
-                        .IsRequired();
-
-                    b.Property<string>("UserId")
                         .IsRequired();
 
                     b.HasKey("Id");
@@ -198,27 +195,21 @@ namespace Appli.Migrations
                             Id = 1,
                             EmailAddress = "janki@deep.com",
                             FullName = "Janki Patel",
-                            IsActive = true,
-                            PhoneNumber = "615-224-2345",
-                            UserId = "00000000-ffff-ffff-ffff-ffffffffffff"
+                            PhoneNumber = "615-224-2345"
                         },
                         new
                         {
                             Id = 2,
                             EmailAddress = "anuj@deep.com",
                             FullName = "Anuj Patel",
-                            IsActive = true,
-                            PhoneNumber = "615-334-4565",
-                            UserId = "00000000-ffff-ffff-ffff-ffffffffffff"
+                            PhoneNumber = "615-334-4565"
                         },
                         new
                         {
                             Id = 3,
                             EmailAddress = "Shreeda@deep.com",
                             FullName = "Shreeda Patel",
-                            IsActive = true,
-                            PhoneNumber = "847-123-4565",
-                            UserId = "00000000-ffff-ffff-ffff-ffffffffffff"
+                            PhoneNumber = "847-123-4565"
                         });
                 });
 
@@ -409,13 +400,13 @@ namespace Appli.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c1ec2f5a-ca62-4786-85ff-914b4d417327",
+                            ConcurrencyStamp = "ec0cd8be-e139-47f8-aefc-e87be39eba0a",
                             Email = "deep@patel.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "DEEP@PATEL.COM",
                             NormalizedUserName = "DEEP@PATEL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDLXpEgoL6Wm5vJkpwr35+S/UrVatHfpmyhwTLDJMr4ZeWTMHJGDd+++16SlCFHKfA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDlK5hlS3JxMzALpFjvQmX03ujGUsrlJpTxhLTp1f5WGO+pCFep1okfM7+yoFvcnFA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
                             TwoFactorEnabled = false,

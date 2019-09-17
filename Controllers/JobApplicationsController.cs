@@ -59,10 +59,19 @@ namespace Appli.Controllers
         }
 
         // GET: JobApplications/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["RecruiterId"] = new SelectList(_context.Recruiter, "Id", "EmailAddress");
-            return View();
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var recruiterList = new SelectList(_context.Recruiter
+                .Where(r => r.UserId == user.Id) 
+                .Where(r => r.IsActive == true), "Id", "FullName")
+                .ToList();
+            recruiterList.Insert(0, new SelectListItem
+            {
+                Text = "Select Recruiter",
+                Value = "null"
+            });
+            ViewData["RecruiterId"] = recruiterList; return View();
         }
 
         // POST: JobApplications/Create
@@ -70,15 +79,34 @@ namespace Appli.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,DateCreated,NextInterview,CompanyName,Position,RecruiterId,PositionLink,Rejected,Offer,LastContact,Notes,IsActive")] JobApplication jobApplication)
+        public async Task<IActionResult> Create([Bind("Id,UserId,DateCreated,CompanyName,Position,RecruiterId,PositionLink,Rejected,Offer,LastContact,Notes,IsActive")] JobApplication jobApplication)
         {
+            if (jobApplication.RecruiterId.ToString() == "null")
+            {
+                jobApplication.RecruiterId = null;
+            }
+
+            ModelState.Remove("UserId");
+            ModelState.Remove("RecruiterId");
+            ModelState.Remove("IsActive");
             if (ModelState.IsValid)
             {
+                var user = await GetUserAsync();
+                jobApplication.UserId = user.Id;
+                jobApplication.IsActive = true;
                 _context.Add(jobApplication);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RecruiterId"] = new SelectList(_context.Recruiter, "Id", "EmailAddress", jobApplication.RecruiterId);
+            var recruiterList = new SelectList(_context.Recruiter
+                .Where(r => r.IsActive == true), "Id", "FullName")
+                .ToList();
+            recruiterList.Insert(0, new SelectListItem
+            {
+                Text = "Select Recruiter",
+                Value = "null"
+            });
+            ViewData["RecruiterId"] = recruiterList;
             return View(jobApplication);
         }
 
@@ -97,7 +125,17 @@ namespace Appli.Controllers
             {
                 return NotFound();
             }
-            ViewData["RecruiterId"] = new SelectList(_context.Recruiter, "Id", "EmailAddress", jobApplication.RecruiterId);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var recruiterList = new SelectList(_context.Recruiter
+                .Where(r => r.UserId == user.Id)
+                .Where(r => r.IsActive == true), "Id", "FullName")
+                .ToList();
+            recruiterList.Insert(0, new SelectListItem
+            {
+                Text = "Select Recruiter",
+                Value = "null"
+            });
+            ViewData["RecruiterId"] = recruiterList;
             return View(jobApplication);
         }
 
@@ -106,12 +144,18 @@ namespace Appli.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,DateCreated,CompanyName,Position,RecruiterId,PositionLink,Rejected,Offer,LastContact,Notes,IsActive")] JobApplication jobApplication)
         {
+            if (jobApplication.RecruiterId.ToString() == "null")
+            {
+                jobApplication.RecruiterId = null;
+            }
+
             if (id != jobApplication.Id)
             {
                 return NotFound();
             }
 
             ModelState.Remove("UserId");
+            ModelState.Remove("RecruiterId");
             if (ModelState.IsValid)
             {
                 try
@@ -134,7 +178,15 @@ namespace Appli.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RecruiterId"] = new SelectList(_context.Recruiter, "Id", "EmailAddress", jobApplication.RecruiterId);
+            var recruiterList = new SelectList(_context.Recruiter
+                .Where(r => r.IsActive == true), "Id", "FullName")
+                .ToList();
+            recruiterList.Insert(0, new SelectListItem
+            {
+                Text = "Select Recruiter",
+                Value = "null"
+            });
+            ViewData["RecruiterId"] = recruiterList;
             return View(jobApplication);
         }
 

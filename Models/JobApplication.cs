@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -57,6 +58,7 @@ namespace Appli.Models
         public string Notes { get; set; }
 
         [Display(Name = "Still Active?")]
+        [DefaultValue(true)]
         public bool IsActive { get; set; }
         public virtual ICollection<Interview> Interviews { get; set; }
 

@@ -8,23 +8,31 @@ using Microsoft.EntityFrameworkCore;
 using Appli.Data;
 using Appli.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Appli.Controllers
 {
     [Authorize]
     public class RecruitersController : Controller
     {
-        private readonly ApplicationDbContext _context;
 
-        public RecruitersController(ApplicationDbContext context)
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public RecruitersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Recruiters
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Recruiter.ToListAsync());
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            return View(await _context.Recruiter
+                .Where(r => r.IsActive == true)
+                .Where(r => r.UserId == user.Id)
+                .ToListAsync());
         }
 
         // GET: Recruiters/Details/5
@@ -56,10 +64,14 @@ namespace Appli.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FullName,PhoneNumber,EmailAddress")] Recruiter recruiter)
+        public async Task<IActionResult> Create([Bind("Id,FullName,PhoneNumber,EmailAddress,IsActive")] Recruiter recruiter)
         {
+            ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                recruiter.UserId = user.Id;
+                recruiter.IsActive = true;
                 _context.Add(recruiter);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -88,17 +100,21 @@ namespace Appli.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,PhoneNumber,EmailAddress")] Recruiter recruiter)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,PhoneNumber,EmailAddress,IsActive")] Recruiter recruiter)
         {
             if (id != recruiter.Id)
             {
                 return NotFound();
             }
 
+            ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var user = await _userManager.GetUserAsync(HttpContext.User);
+                    recruiter.UserId = user.Id;
+                    recruiter.IsActive = true;
                     _context.Update(recruiter);
                     await _context.SaveChangesAsync();
                 }
@@ -142,7 +158,8 @@ namespace Appli.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var recruiter = await _context.Recruiter.FindAsync(id);
-            _context.Recruiter.Remove(recruiter);
+            recruiter.IsActive = false;
+            _context.Recruiter.Update(recruiter);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -150,6 +167,11 @@ namespace Appli.Controllers
         private bool RecruiterExists(int id)
         {
             return _context.Recruiter.Any(e => e.Id == id);
+        }
+
+        private Task<ApplicationUser> GetUserAsync()
+        {
+            return _userManager.GetUserAsync(HttpContext.User);
         }
     }
 }
