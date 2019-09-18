@@ -61,11 +61,5 @@ body {
 
 .jobApp {
     border: 5px solid black;
-    border-radius: 5px;
-}
-
-.table th, .table td {
-    padding: 0.75rem;
-    vertical-align: top;
-    border-top: 3px solid black;
+    border-radius: 3px;
 }

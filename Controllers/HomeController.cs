@@ -34,7 +34,8 @@ namespace Appli.Controllers
                     .Include(j => j.Interviews)
                     .Include(j => j.User)
                     .Where(j => j.UserId == user.Id)
-                    .Where(j => j.IsActive == true);
+                    .Where(j => j.IsActive == true)
+                    .Where(j => j.Rejected == false);
                 return View(await applicationDbContext.ToListAsync());
             }
             else

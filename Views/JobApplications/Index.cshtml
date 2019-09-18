@@ -7,28 +7,28 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
+<table class="table table-hover">
+    <thead class="jobApp border-primary">
         <tr>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.CompanyName)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.Position)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.Recruiter)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.PositionLink)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.NextInterview)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.Offer)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.LastContact)
             </th>
             <th></th>
@@ -37,8 +37,9 @@
     <tbody>
         @foreach (var item in Model)
         {
-
-            <tr class="jobApp">
+            @if (item.IsActive == false)
+            {
+                <tr class="jobApp table-active">
                     <td>
                         @Html.DisplayFor(modelItem => item.CompanyName)
                     </td>
@@ -65,7 +66,135 @@
                         <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                         <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     </td>
-            </tr>
+                </tr>
+            }
+            else if (item.Rejected == true)
+            {
+                <tr class="jobApp table-danger">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CompanyName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Position)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Recruiter.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PositionLink)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NextInterview)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Offer)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastContact)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+
+            else if (item.NextInterview != null)
+            {
+                <tr class="jobApp table-success">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CompanyName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Position)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Recruiter.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PositionLink)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NextInterview)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Offer)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastContact)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+
+            else if (item.LastContact.AddDays(7) < DateTime.Now)
+            {
+                <tr class="jobApp table-primary">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CompanyName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Position)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Recruiter.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PositionLink)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NextInterview)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Offer)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastContact)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+
+            else
+            {
+                <tr class="jobApp table-warning">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CompanyName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Position)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Recruiter.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PositionLink)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NextInterview)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Offer)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastContact)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>
