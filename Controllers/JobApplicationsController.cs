@@ -96,7 +96,7 @@ namespace Appli.Controllers
                 jobApplication.IsActive = true;
                 _context.Add(jobApplication);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             var recruiterList = new SelectList(_context.Recruiter
                 .Where(r => r.IsActive == true), "Id", "FullName")
@@ -176,7 +176,7 @@ namespace Appli.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             var recruiterList = new SelectList(_context.Recruiter
                 .Where(r => r.IsActive == true), "Id", "FullName")
@@ -217,7 +217,7 @@ namespace Appli.Controllers
             var jobApplication = await _context.JobApplication.FindAsync(id);
             _context.JobApplication.Remove(jobApplication);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Home");
         }
 
         private bool JobApplicationExists(int id)
