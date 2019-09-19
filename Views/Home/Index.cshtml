@@ -21,8 +21,8 @@
         <a asp-controller="JobApplications" asp-action="Create">Create New</a>
     </p>
     <table class="table table-hover">
-        <thead >
-            <tr class="table-dark">
+        <thead>
+            <tr class="table-info">
                 <th scope="col">
                     @Html.DisplayNameFor(model => model.CompanyName)
                 </th>
@@ -161,8 +161,9 @@
                             @Html.DisplayFor(modelItem => item.PositionLink)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.NextInterview)
+                           Time to follow up...
                         </td>
+
                         <td>
                             @Html.DisplayFor(modelItem => item.Offer)
                         </td>
@@ -174,10 +175,6 @@
                             <a asp-controller="JobApplications" asp-action="Details" asp-route-id="@item.Id">Details</a> |
                             <a asp-controller="JobApplications" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                         </td>
-
-
-
-
                     </tr>
                 }
 

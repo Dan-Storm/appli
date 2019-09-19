@@ -3,13 +3,14 @@
 @{
     ViewData["Title"] = "Index";
 }
+<h4>Application History</h4>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
 <table class="table table-hover">
     <thead class="jobApp border-primary">
-        <tr>
+        <tr class="table-info">
             <th scope="col">
                 @Html.DisplayNameFor(model => model.CompanyName)
             </th>
