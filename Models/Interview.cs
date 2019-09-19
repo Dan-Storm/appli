@@ -18,7 +18,7 @@ namespace Appli.Models
 
         [Display(Name = "Date")]
         [Required]
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         public DateTime Date { get; set; }
 
         [Display(Name = "Address")]

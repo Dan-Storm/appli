@@ -71,7 +71,7 @@ namespace Appli.Data
                 {
                     Id = 2,
                     JobApplicationId = 1,
-                    Date = DateTime.Now.Date.AddDays(+10),
+                    Date = DateTime.Now.Date.AddDays(+10).AddHours(15),
                     Address = "50 Hickory Blvd",
                     Notes = "Wear a really nice shirt"
                 },
@@ -79,7 +79,7 @@ namespace Appli.Data
                 {
                     Id = 3,
                     JobApplicationId = 2,
-                    Date = DateTime.Now.Date.AddDays(+17),
+                    Date = DateTime.Now.Date.AddDays(+17).AddHours(12),
                     Address = "5100 Old Blvd",
                     Notes = "Wear a nice shirt like Deep would"
                 },
@@ -87,7 +87,7 @@ namespace Appli.Data
                 {
                     Id = 4,
                     JobApplicationId = 2,
-                    Date = DateTime.Now.Date.AddDays(+10),
+                    Date = DateTime.Now.Date.AddDays(+10).AddHours(10),
                     Address = "100 Old Town Road",
                     Notes = "Smile"
                 }
