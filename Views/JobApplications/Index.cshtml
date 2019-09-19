@@ -100,9 +100,17 @@
                     </td>
                 </tr>
             }
-
             else if (item.NextInterview != null)
             {
+                @if (item.NextInterview.Value.AddDays(-2) <= DateTime.Now)
+                {
+                    <div class="alert alert-dismissible alert-success">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <h4 class="alert-heading">You've got an interview coming up!</h4>
+                        <p class="mb-0">Don't forget your interview with @item.CompanyName | @item.NextInterview!</p>
+                        <p class="mb-0">@item.Notes!</p>
+                    </div>
+                }
                 <tr class="jobApp table-success">
                     <td>
                         @Html.DisplayFor(modelItem => item.CompanyName)
@@ -126,17 +134,22 @@
                         @Html.DisplayFor(modelItem => item.LastContact)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        <a asp-controller="JobApplications" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-controller="JobApplications" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-controller="JobApplications" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     </td>
                 </tr>
             }
 
             else if (item.LastContact.AddDays(7) < DateTime.Now)
             {
+                <div class="alert alert-dismissible alert-primary">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <h4 class="alert-heading">Hey There!</h4>
+                    <p class="mb-0">Time to reach out to @item.CompanyName</p>
+                </div>
                 <tr class="jobApp table-primary">
-                    <td>
+                    <td id="company-name">
                         @Html.DisplayFor(modelItem => item.CompanyName)
                     </td>
                     <td>
@@ -148,9 +161,10 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.PositionLink)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NextInterview)
+                    <td id="index-alert">
+                        <b>Time to follow up...</b>
                     </td>
+
                     <td>
                         @Html.DisplayFor(modelItem => item.Offer)
                     </td>
@@ -158,9 +172,9 @@
                         @Html.DisplayFor(modelItem => item.LastContact)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        <a asp-controller="JobApplications" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-controller="JobApplications" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-controller="JobApplications" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     </td>
                 </tr>
             }
